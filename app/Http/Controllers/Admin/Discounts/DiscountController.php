@@ -12,16 +12,18 @@ class DiscountController extends Controller
     public function __invoke(DiscountRequest $request)
     {
         $data = $request->validated();
-        if ($data['discount_value'] == 1) {
-            $productsPrice = Product::select('price')->get();
-            foreach ($productsPrice as $key => $value) {
+        $productsPrice = Product::select('price')->get();
+        foreach ($productsPrice as $key => $value) {
+            if ($data['discount_value'] == 1) {
                 DB::table('products')
-                    ->where('id', ++$key)
-                    ->update(['price' => $value->price / 100 * (100 + $data['discount'])]);
+                ->where('id', ++$key)
+                ->update(['price' => $value->price / 100 * (100 + $data['discount'])]);
+            } else {
+                DB::table('products')
+                ->where('id', ++$key)
+                ->update(['price' => $value->price / 100 * (100 - $data['discount'])]);
             }
-            dd('success');
-        } else {
-            dd('fail');
         }
+        return redirect()->route('admin.products.index');
     }
 }
