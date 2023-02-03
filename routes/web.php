@@ -67,4 +67,8 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admi
         Route::patch('/{contact}', 'UpdateController')->name('admin.contacts.update');
         Route::delete('/{contact}/delete', 'DestroyController')->name('admin.contacts.destroy');
     });
+    Route::group(['namespace' => 'Discounts', 'prefix' => 'discounts'], function() {
+        Route::get('/', 'IndexController')->name('admin.discounts.index');
+        Route::post('/', 'DiscountController')->name('admin.discounts.discount');
+    });
 });
